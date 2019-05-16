@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.0.2] - 2019-05-16
+### Changed
+- Updated version and keywords in composer file
+- Updated README.md file
+
 ## [1.0.1] - 2019-05-16
 ### Changed
 - PHPUnit moved to dev version in composer.json file
@@ -12,6 +17,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Initial version of repository
 
-[Unreleased]: https://github.com/thewind1984/jquery-uat/compare/1.0.1...HEAD
+[Unreleased]: https://github.com/thewind1984/jquery-uat/compare/1.0.2...HEAD
+[1.0.2]: https://github.com/thewind1984/jquery-uat/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/thewind1984/jquery-uat/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/thewind1984/jquery-uat/compare/0.1...1.0.0
