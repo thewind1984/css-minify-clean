@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# If any command below fails, the script will exit immediately
+set -e
+
+bin_path=$(dirname "$0")
+
+php ${bin_path}/../vendor/bin/phpstan analyse --memory-limit=64M --level=7 ${bin_path}/../src

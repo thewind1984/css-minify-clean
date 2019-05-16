@@ -1,0 +1,56 @@
+{
+    "name": "thewind1984/css-optimizator",
+    "description": "Interface accepts css files and folders / single templates files, then combines provided css files into one, compares it with provided templates, removes unused selectors and minifies final file",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Dmitriy Ignatiev",
+            "email": "thewind05@gmail.com",
+            "homepage": "http://dignatiev.ru",
+            "role": "Developer"
+        }
+    ],
+    "version": "1.0.0",
+    "keywords": [
+        "css",
+        "minify",
+        "optimize",
+        "clean",
+        "minification",
+        "optimization"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/thewind1984/css-optimizator"
+    },
+    "homepage": "http://dignatiev.ru/portfolio/css-optimizator",
+    "license": "MIT",
+    "support": {
+        "email": "thewind05@gmail.com"
+    },
+    "require": {
+        "php": "^7.2",
+        "ext-dom": "*",
+        "ext-xml": "*",
+        "ext-simplexml": "*",
+        "ext-mbstring": "*",
+        "phpunit/phpunit": "^8.1",
+        "symfony/finder": "^4.2"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^0.11.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "CssOptimizator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CssOptimizator\\Tests\\": "tests/"
+        }
+    },
+    "bin": [
+        "bin/cssoptimizator_phpstan"
+    ]
+}
