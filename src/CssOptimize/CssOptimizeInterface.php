@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace CssOptimizator\CssOptimize;
 
+use CssOptimizator\CssOptimize\Exceptions\CssFileNotFoundException;
+use CssOptimizator\CssOptimize\Exceptions\FileIsNotReadableException;
+use CssOptimizator\CssOptimize\Exceptions\SourceFileNotFoundException;
+
 interface CssOptimizeInterface
 {
     /**
      * Adds new css file by its path to analyze scope.
      *
      * @param string $filePath
+     *
+     * @throws CssFileNotFoundException
+     * @throws FileIsNotReadableException
      *
      * @return CssOptimizeInterface
      */
@@ -30,6 +37,9 @@ interface CssOptimizeInterface
      * @param string $dirPath
      * @param string|null $filePathFilter
      *
+     * @throws SourceFileNotFoundException
+     * @throws FileIsNotReadableException
+     *
      * @return CssOptimizeInterface
      */
     public function addSourceFolder(string $dirPath, string $filePathFilter = null): self;
@@ -38,6 +48,9 @@ interface CssOptimizeInterface
      * Adds specified source file.
      *
      * @param string $filePath
+     *
+     * @throws SourceFileNotFoundException
+     * @throws FileIsNotReadableException
      *
      * @return CssOptimizeInterface
      */
