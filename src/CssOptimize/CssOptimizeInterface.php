@@ -16,6 +16,15 @@ interface CssOptimizeInterface
     public function addCssFile(string $filePath): self;
 
     /**
+     * Adds css content (from text) to analyze scope.
+     *
+     * @param string $content
+     *
+     * @return CssOptimizeInterface
+     */
+    public function addCssContent(string $content): self;
+
+    /**
      * Adds new source folder with optional filter for files.
      *
      * @param string $dirPath
@@ -33,6 +42,15 @@ interface CssOptimizeInterface
      * @return CssOptimizeInterface
      */
     public function addSourceFile(string $filePath): self;
+
+    /**
+     * Adds source (html) content (from text).
+     *
+     * @param string $content
+     *
+     * @return CssOptimizeInterface
+     */
+    public function addSourceContent(string $content): self;
 
     /**
      * Makes optimization of scope of css files according to source files.
@@ -53,7 +71,14 @@ interface CssOptimizeInterface
      *
      * @return string
      */
-    public function getContent(): string;
+    public function getCssContent(): string;
+
+    /**
+     * Returns current source.
+     *
+     * @return string
+     */
+    public function getSourceContent(): string;
 
     /**
      * Saves current css content to specified file.
@@ -62,12 +87,12 @@ interface CssOptimizeInterface
      *
      * @return CssOptimizeInterface
      */
-    public function saveContent(string $filePath): self;
+    public function saveCssContent(string $filePath): self;
 
     /**
      * Returns length of current css content.
      *
      * @return int
      */
-    public function getContentLength(): int;
+    public function getCssContentLength(): int;
 }

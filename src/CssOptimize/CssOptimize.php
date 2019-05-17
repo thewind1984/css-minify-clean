@@ -6,6 +6,9 @@ namespace CssOptimizator\CssOptimize;
 
 use CssOptimizator\CssOptimize\CssMinificator\CssMinificator;
 use CssOptimizator\CssOptimize\CssOptimizator\CssOptimizator;
+use CssOptimizator\CssOptimize\Exceptions\CssFileNotFoundException;
+use CssOptimizator\CssOptimize\Exceptions\FileIsNotReadableException;
+use CssOptimizator\CssOptimize\Exceptions\SourceFileNotFoundException;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -13,8 +16,6 @@ use Symfony\Component\Finder\Finder;
  *
  * @author Dmitriy Ignatiev <thewind05@gmail.com>
  * @license MIT
- * @copyright 2019
- * @version 1.0
  */
 class CssOptimize implements CssOptimizeInterface
 {
@@ -24,19 +25,14 @@ class CssOptimize implements CssOptimizeInterface
     private $finder;
 
     /**
-     * @var array
+     * @var string
      */
-    private $cssFiles = [];
-
-    /**
-     * @var array
-     */
-    private $sourceFiles = [];
+    private $cssContent = '';
 
     /**
      * @var string
      */
-    private $content = '';
+    private $sourceContent = '';
 
     public function __construct()
     {
@@ -48,7 +44,25 @@ class CssOptimize implements CssOptimizeInterface
      */
     public function addCssFile(string $filePath): CssOptimizeInterface
     {
-        $this->cssFiles[] = $filePath;
+        if (!file_exists($filePath)) {
+            throw new CssFileNotFoundException(sprintf('CSS file not found (%s)', $filePath));
+        }
+
+        $content = file_get_contents($filePath);
+
+        if ($content === false) {
+            throw new FileIsNotReadableException($filePath);
+        }
+
+        return $this->addCssContent($content);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function addCssContent(string $content): CssOptimizeInterface
+    {
+        $this->cssContent .= $content;
 
         return $this;
     }
@@ -61,7 +75,19 @@ class CssOptimize implements CssOptimizeInterface
         $filesList = $this->finder->files()->in($dirPath)->name($filePathFilter ?? []);
 
         foreach ($filesList as $file) {
-            $this->sourceFiles[] = $file->getRealPath();
+            $filePath = $file->getRealPath();
+
+            if (!is_string($filePath)) {
+                throw new SourceFileNotFoundException();
+            }
+
+            $content = file_get_contents($filePath);
+
+            if ($content === false) {
+                throw new FileIsNotReadableException($filePath);
+            }
+
+            $this->addSourceContent($content);
         }
 
         return $this;
@@ -72,7 +98,25 @@ class CssOptimize implements CssOptimizeInterface
      */
     public function addSourceFile(string $filePath): CssOptimizeInterface
     {
-        $this->sourceFiles[] = $filePath;
+        if (!file_exists($filePath)) {
+            throw new SourceFileNotFoundException(sprintf('Source file not found (%s)', $filePath));
+        }
+
+        $content = file_get_contents($filePath);
+
+        if ($content === false) {
+            throw new FileIsNotReadableException($filePath);
+        }
+
+        return $this->addSourceContent($content);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function addSourceContent(string $content): CssOptimizeInterface
+    {
+        $this->sourceContent .= $content;
 
         return $this;
     }
@@ -82,33 +126,17 @@ class CssOptimize implements CssOptimizeInterface
      */
     public function optimize(): CssOptimizeInterface
     {
-        if (!count($this->cssFiles)) {
+        if (!trim($this->cssContent)) {
             return $this;
         }
 
-        if (!count($this->sourceFiles)) {
-            $this->content = '';
+        if (!trim($this->sourceContent)) {
+            $this->cssContent = '';
 
             return $this;
         }
 
-        $cssContent = $sourceContent = '';
-
-        array_walk($this->cssFiles, function (string $filePath) use (&$cssContent) {
-            if (file_exists($filePath) && is_file($filePath)) {
-                $cssContent .= file_get_contents($filePath);
-            }
-        });
-
-        array_walk($this->sourceFiles, function (string $filePath) use (&$sourceContent) {
-            if (file_exists($filePath) && is_file($filePath)) {
-                $sourceContent .= file_get_contents($filePath);
-            }
-        });
-
-        if (trim($cssContent) !== '') {
-            $this->content = (new CssOptimizator())->optimize($cssContent, $sourceContent);
-        }
+        $this->cssContent = (new CssOptimizator())->optimize($this->cssContent, $this->sourceContent);
 
         return $this;
     }
@@ -118,7 +146,7 @@ class CssOptimize implements CssOptimizeInterface
      */
     public function minify(): CssOptimizeInterface
     {
-        $this->content = (new CssMinificator())->minify($this->content);
+        $this->cssContent = (new CssMinificator())->minify($this->cssContent);
 
         return $this;
     }
@@ -126,17 +154,25 @@ class CssOptimize implements CssOptimizeInterface
     /**
      * @inheritdoc
      */
-    public function getContent(): string
+    public function getCssContent(): string
     {
-        return $this->content;
+        return $this->cssContent;
     }
 
     /**
      * @inheritdoc
      */
-    public function saveContent(string $filePath): CssOptimizeInterface
+    public function getSourceContent(): string
     {
-        file_put_contents($filePath, $this->content);
+        return $this->sourceContent;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function saveCssContent(string $filePath): CssOptimizeInterface
+    {
+        file_put_contents($filePath, $this->cssContent);
 
         return $this;
     }
@@ -144,8 +180,8 @@ class CssOptimize implements CssOptimizeInterface
     /**
      * @inheritdoc
      */
-    public function getContentLength(): int
+    public function getCssContentLength(): int
     {
-        return mb_strlen($this->content);
+        return mb_strlen($this->cssContent);
     }
 }

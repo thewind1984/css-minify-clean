@@ -12,12 +12,17 @@ It supports twig templates also, because `{% %}`, `{{ }}` and `{# #}` will be de
 * Multiple selectors separated with **, (comma)**
 
 ## TODO
-* Chains of CSS selectors with **+** separator
+* Parsing of chains of CSS selectors with **+** separator
   * `.class + .subclass` 
 * Parsing of selectors, which are implemented with quatro brackets
   * `audio[controls]`
   * `[id*="xxx"]`, `[class^="yyy"]`, `[attr$="zzz"]`
-* Pseudo-class `nth-child`
+* Implementation convertion to xPath for pseudo-classes
+  * `nth-child`
+* Combining of duplicated selectors
+  * `body {margin; 0;} body {color: #000;}` => `body {margin: 0; color: #000;}`
+* Unification / optimization the rules inside selector
+  * `margin: 0; margin-bottom: 10px;` => `margin: 0 0 10px;`
 
 ## Installation through Composer
 

@@ -1,0 +1,12 @@
+/**
+ * Test css file
+ * @author Dmitriy Ignatiev
+ */
+body {
+    margin: 0px;
+}
+
+p {
+    color: red;
+    padding: 10px;
+}

@@ -12,6 +12,7 @@ namespace CssOptimizator\CssOptimize\CssOptimizator;
  *  - '*.class' selector does not work properly with * instead of letters
  *
  * @author Dmitriy Ignatiev <thewind05@gmail.com>
+ * @license MIT
  */
 class CssOptimizator implements CssOptimizatorInterface
 {
