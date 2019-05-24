@@ -29,11 +29,23 @@ final class CssOptimizatorTest extends TestCase
      * @param string $cssContent
      * @param string $htmlContainedSelector
      * @param string $htmlNotContainedSelector
+     * @param int $expectedSelectorsProcessed
+     * @param int $expectedSelectorsRemoved
      */
-    public function optimizeTestAboutHtmlEitherContainsOrNotAppropriateTags(string $cssContent, string $htmlContainedSelector, string $htmlNotContainedSelector): void
-    {
+    public function optimizeTestAboutHtmlEitherContainsOrNotAppropriateTags(
+        string $cssContent,
+        string $htmlContainedSelector,
+        string $htmlNotContainedSelector,
+        int $expectedSelectorsProcessed,
+        int $expectedSelectorsRemoved
+    ): void {
         $this->assertSame($cssContent, $this->cssOptimizator->optimize($cssContent, $htmlContainedSelector));
+        $this->assertSame($expectedSelectorsProcessed, $this->cssOptimizator->getSelectorsProcessed());
+
         $this->assertSame('', $this->cssOptimizator->optimize($cssContent, $htmlNotContainedSelector));
+        $this->assertSame($expectedSelectorsProcessed, $this->cssOptimizator->getSelectorsProcessed());
+
+        $this->assertSame($expectedSelectorsRemoved, $this->cssOptimizator->getSelectorsRemoved());
     }
 
     /**
@@ -54,15 +66,15 @@ final class CssOptimizatorTest extends TestCase
      */
     public function optimizeCssCasesContains(): \Generator
     {
-        yield ['.class{k:v}', '<p class="class"></p>', '<p class="class2"></p>'];
-        yield ['#id{k:v}', '<p id="id"></p>', '<p id="dida"></p>'];
-        yield ['.class #id {k:v}', '<p class="class"><span id="id"></span></p>', '<p class="class"><span id="id1"></span></p>'];
-        yield ['#id > ul li {k:v}', '<div id="id"><ul><li></li></ul>', '<div id="id"><div><ul><li></li></ul></div></div>'];
-        yield ['.class#with-id > div ~ p.sub_class {k:v}', '<div class="class" id="with-id"><div></div><p class="sub_class"></p></div>', '<div class="class" id="with-id"><div><p class="sub_class"></p></div></div>'];
-        yield ['b:first-child {k:v}', '<div><b></b></div>', '<p><a></a></p>'];
-        yield ['b:last-child {k:v}', '<div><b></b></div>', '<p><a></a></p>'];
-        yield ['a:not(.dd) {k:v}', '<a class="dd1"></a>', '<a class="dd"></a>'];
-        yield ['a:not(.dd#qq) {k:v}', '<a class="dd1" id="qq"></a>', '<a class="dd" id="qq"></a>'];
+        yield ['.class{k:v}', '<p class="class"></p>', '<p class="class2"></p>', 1, 1];
+        yield ['#id{k:v}', '<p id="id"></p>', '<p id="dida"></p>', 1, 1];
+        yield ['.class #id {k:v}', '<p class="class"><span id="id"></span></p>', '<p class="class"><span id="id1"></span></p>', 1, 1];
+        yield ['#id > ul li {k:v}', '<div id="id"><ul><li></li></ul>', '<div id="id"><div><ul><li></li></ul></div></div>', 1, 1];
+        yield ['.class#with-id > div ~ p.sub_class {k:v}', '<div class="class" id="with-id"><div></div><p class="sub_class"></p></div>', '<div class="class" id="with-id"><div><p class="sub_class"></p></div></div>', 1, 1];
+        yield ['b:first-child {k:v}', '<div><b></b></div>', '<p><a></a></p>', 1, 1];
+        yield ['b:last-child {k:v}', '<div><b></b></div>', '<p><a></a></p>', 1, 1];
+        yield ['a:not(.dd) {k:v}', '<a class="dd1"></a>', '<a class="dd"></a>', 1, 1];
+        yield ['a:not(.dd#qq) {k:v}', '<a class="dd1" id="qq"></a>', '<a class="dd" id="qq"></a>', 1, 1];
     }
 
     /**
