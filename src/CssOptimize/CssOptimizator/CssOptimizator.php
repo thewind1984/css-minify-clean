@@ -24,6 +24,7 @@ class CssOptimizator implements CssOptimizatorInterface
     private $xPathErrorCount = 0;
     private $xPathSuccessCount = 0;
     private $selectorsRemoved = 0;
+    private $selectorsProcessed = 0;
 
     /**
      * @inheritdoc
@@ -31,6 +32,8 @@ class CssOptimizator implements CssOptimizatorInterface
     public function optimize(string $cssContent, string $sourceContent): string
     {
         preg_match_all('/(?<selector>[^\{]{1,})[\,\{]{1}(?<content>[^\}]*)\}/i', (string)preg_replace('/\/\*(?:(?!\*\/).)*\*\//s', '', $cssContent), $selectors);
+
+        $this->selectorsProcessed = count($selectors[0]);
 
         /**
          * Remove all constructions like:
@@ -78,7 +81,7 @@ class CssOptimizator implements CssOptimizatorInterface
     }
 
     /**
-     * @return int
+     * @inheritdoc
      */
     public function getXPathErrorCount(): int
     {
@@ -86,7 +89,7 @@ class CssOptimizator implements CssOptimizatorInterface
     }
 
     /**
-     * @return int
+     * @inheritdoc
      */
     public function getXPathSuccessCount(): int
     {
@@ -94,11 +97,19 @@ class CssOptimizator implements CssOptimizatorInterface
     }
 
     /**
-     * @return int
+     * @inheritdoc
      */
     public function getSelectorsRemoved(): int
     {
         return $this->selectorsRemoved;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSelectorsProcessed(): int
+    {
+        return $this->selectorsProcessed;
     }
 
     /**
