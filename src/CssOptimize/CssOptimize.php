@@ -25,6 +25,16 @@ class CssOptimize implements CssOptimizeInterface
     private $finder;
 
     /**
+     * @var CssMinificator
+     */
+    private $cssMinificator;
+
+    /**
+     * @var CssOptimizator
+     */
+    private $cssOptimizator;
+
+    /**
      * @var string
      */
     private $cssContent = '';
@@ -34,9 +44,10 @@ class CssOptimize implements CssOptimizeInterface
      */
     private $sourceContent = '';
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->finder = new Finder();
+        $this->cssMinificator = new CssMinificator();
+        $this->cssOptimizator = new CssOptimizator();
     }
 
     /**
@@ -136,7 +147,7 @@ class CssOptimize implements CssOptimizeInterface
             return $this;
         }
 
-        $this->cssContent = (new CssOptimizator())->optimize($this->cssContent, $this->sourceContent);
+        $this->cssContent = $this->cssOptimizator->optimize($this->cssContent, $this->sourceContent);
 
         return $this;
     }
@@ -146,7 +157,7 @@ class CssOptimize implements CssOptimizeInterface
      */
     public function minify(): CssOptimizeInterface
     {
-        $this->cssContent = (new CssMinificator())->minify($this->cssContent);
+        $this->cssContent = $this->cssMinificator->minify($this->cssContent);
 
         return $this;
     }
@@ -183,5 +194,17 @@ class CssOptimize implements CssOptimizeInterface
     public function getCssContentLength(): int
     {
         return mb_strlen($this->cssContent);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getOptimizationStats(): \stdClass
+    {
+        $result = new \stdClass();
+        $result->processed = $this->cssOptimizator->getSelectorsProcessed();
+        $result->removed = $this->cssOptimizator->getSelectorsRemoved();
+
+        return $result;
     }
 }

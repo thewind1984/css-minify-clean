@@ -16,7 +16,7 @@ class CssMinificator implements CssMinificatorInterface
         $content = (string)preg_replace('/\/\*(?:(?!\*\/).)*\*\//s', '', $content);
 
         // remove leading spaces for each line
-        $content = (string)preg_replace('/^[ ]+/m', '', $content);
+        $content = (string)preg_replace('/^[ \t]+/m', '', $content);
 
         // remove around spaces near special symbols
         $content = (string)preg_replace('/[ ]*([\{\>\~]+)[ ]*/', '\1', $content);
@@ -30,20 +30,26 @@ class CssMinificator implements CssMinificatorInterface
         // replace extra staff for minification purposes
         $content = str_replace([
             '} {',
-            ';}',
             '@import url(',
             ' 0px',
             '; ',
             ': ',
             ', ',
+            ' 0.',
+            ':0.',
+            ' 0s;',
+            ';}',
         ], [
             '}{',
-            '}',
             PHP_EOL . '@import url(',
             ' 0',
             ';',
             ':',
             ',',
+            ' .',
+            ':.',
+            ';',
+            '}',
         ], $content);
 
         // final trimming

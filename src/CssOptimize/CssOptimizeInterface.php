@@ -108,4 +108,9 @@ interface CssOptimizeInterface
      * @return int
      */
     public function getCssContentLength(): int;
+
+    /**
+     * @return \stdClass
+     */
+    public function getOptimizationStats(): \stdClass;
 }
