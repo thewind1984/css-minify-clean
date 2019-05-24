@@ -32,7 +32,7 @@ final class CssOptimizatorTest extends TestCase
      */
     public function optimizeTestAboutHtmlEitherContainsOrNotAppropriateTags(string $cssContent, string $htmlContainedSelector, string $htmlNotContainedSelector): void
     {
-//        $this->assertSame($cssContent, $this->cssOptimizator->optimize($cssContent, $htmlContainedSelector));
+        $this->assertSame($cssContent, $this->cssOptimizator->optimize($cssContent, $htmlContainedSelector));
         $this->assertSame('', $this->cssOptimizator->optimize($cssContent, $htmlNotContainedSelector));
     }
 
