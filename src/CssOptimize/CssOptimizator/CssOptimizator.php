@@ -19,6 +19,7 @@ class CssOptimizator implements CssOptimizatorInterface
     private const LEVEL_TOP = '/';
     private const LEVEL_ANY = '//';
     private const LEVEL_SAME = '/../';
+    private const XPATH_OR = '|';
 
     private $xPathErrorCount = 0;
     private $xPathSuccessCount = 0;
@@ -29,7 +30,7 @@ class CssOptimizator implements CssOptimizatorInterface
      */
     public function optimize(string $cssContent, string $sourceContent): string
     {
-        preg_match_all('/(?<selector>[a-z]*[\.\#]?[^\,\{]*)[\,\{]{1}(?<content>[^\}]*)\}/i', $cssContent, $selectors);
+        preg_match_all('/(?<selector>[^\{]{1,})[\,\{]{1}(?<content>[^\}]*)\}/i', (string)preg_replace('/\/\*(?:(?!\*\/).)*\*\//s', '', $cssContent), $selectors);
 
         /**
          * Remove all constructions like:
@@ -67,7 +68,8 @@ class CssOptimizator implements CssOptimizatorInterface
             }
 
             if ($selectorFound === false) {
-                $cssContent = str_replace($selector, '', $cssContent);
+                $cssSelector = (string)preg_replace('/[\(\)\[\]]+/', '\\\\\0', $cssSelector);
+                $cssContent = (string)preg_replace('/(^| |\}?)' . $cssSelector . '[^\w\{]*\{[^\}]*\}/is', '', $cssContent);
                 $this->selectorsRemoved++;
             }
         }
@@ -116,7 +118,7 @@ class CssOptimizator implements CssOptimizatorInterface
 
         $selector = trim($selector);
 
-        $selector = str_replace(['>', '~', '+'], [' > ', ' ~ ', ' + '], $selector);
+        $selector = (string)preg_replace('/[\>\~\+\,]+/', ' \\0 ', $selector);
         $selector = (string)preg_replace('/[ ]+/', ' ', $selector);
 
         $selector = explode(' ', $selector);
@@ -141,6 +143,11 @@ class CssOptimizator implements CssOptimizatorInterface
 
             if ($part === '+') {
                 // TODO: implement + operator
+            }
+
+            if ($part === ',') {
+                $query[] = self::XPATH_OR;
+                continue 1;
             }
 
             if ($level === 0 && ($partNum === 0 || !in_array(end($query), [self::LEVEL_TOP, self::LEVEL_SAME], true))) {
