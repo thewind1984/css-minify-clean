@@ -54,10 +54,5 @@
     "bin": [
         "bin/cssoptimizator_phpstan",
         "bin/cssoptimizator_phpunit"
-    ],
-    "extra": {
-        "branch-alias": {
-          "dev-master": "version_1.2.0"
-        }
-    }
+    ]
 }
