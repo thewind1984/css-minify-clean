@@ -50,7 +50,7 @@ class CssOptimizator implements CssOptimizatorInterface
         $xpath = new \DOMXPath($doc);
 
         foreach ($selectors[0] as $selectorNum => $selector) {
-            $cssSelector = trim($selectors['selector'][$selectorNum]);
+            $cssSelector = trim(str_replace(PHP_EOL, '', $selectors['selector'][$selectorNum]));
             $xPathQuery = $this->buildXpathQueryFromSelector($cssSelector);
 
             $selectorFound = true;
@@ -71,7 +71,7 @@ class CssOptimizator implements CssOptimizatorInterface
             }
 
             if ($selectorFound === false) {
-                $cssSelector = (string)preg_replace('/[\(\)\[\]]+/', '\\\\\0', $cssSelector);
+                $cssSelector = (string)preg_replace('/[\(\)\[\]]+/', '\\\\\0', (string)$selectors['selector'][$selectorNum]);
                 $cssContent = (string)preg_replace('/(^| |\}?)' . $cssSelector . '[^\w\{]*\{[^\}]*\}/is', '', $cssContent);
                 $this->selectorsRemoved++;
             }
