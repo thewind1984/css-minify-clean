@@ -73,7 +73,7 @@ class CssOptimizator implements CssOptimizatorInterface
             }
 
             if ($selectorFound === false) {
-                $cssSelector = (string)preg_replace('/[\(\)\[\]]+/', '\\\\\0', $selectors['selector'][$selectorNum]);
+                $cssSelector = (string)preg_replace('/[\(\)\[\]]+/', '\\\\\0', (string)$selectors['selector'][$selectorNum]);
                 $cssContent = (string)preg_replace('/(^| |\}?)' . $cssSelector . '[^\w\{]*\{[^\}]*\}/is', '', $cssContent);
                 $this->selectorsRemoved++;
             }
