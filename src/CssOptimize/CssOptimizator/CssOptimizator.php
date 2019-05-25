@@ -53,8 +53,6 @@ class CssOptimizator implements CssOptimizatorInterface
             $cssSelector = trim(str_replace(PHP_EOL, '', $selectors['selector'][$selectorNum]));
             $xPathQuery = $this->buildXpathQueryFromSelector($cssSelector);
 
-            //echo $cssSelector . ' => ' . $xPathQuery . PHP_EOL;
-
             $selectorFound = true;
 
             if (!trim($selectors['content'][$selectorNum])) {
