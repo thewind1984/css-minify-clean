@@ -4,6 +4,19 @@ Added, changed, deleted.
 
 ## [Unreleased]
 
+## [1.2.0] - 2019-05-25
+### Added
+- Processing tabs as spaces during minification
+- Processing additional symbols sequences during minification
+- Processing ~ symbols within CSS selectors during optimization
+- Added statistics of optimization process
+- New tests
+
+### Changed
+- Tests
+- Interfaces
+- Processing combination symbols within selectors
+
 ## [1.1.1] - 2019-05-17
 ### Changed
 - Updated CHANGELOG.md
@@ -33,7 +46,8 @@ Added, changed, deleted.
 ### Added
 - Initial version of repository
 
-[Unreleased]: https://github.com/thewind1984/css-optimizator/compare/1.1.1...HEAD
+[Unreleased]: https://github.com/thewind1984/css-optimizator/compare/1.2.0...HEAD
+[1.2.0]: https://github.com/thewind1984/css-optimizator/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/thewind1984/css-optimizator/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/thewind1984/css-optimizator/compare/1.0.2...1.1.0
 [1.0.2]: https://github.com/thewind1984/css-optimizator/compare/1.0.1...1.0.2
