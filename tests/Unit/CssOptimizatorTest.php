@@ -75,6 +75,7 @@ final class CssOptimizatorTest extends TestCase
         yield ['b:last-child {k:v}', '<div><b></b></div>', '<p><a></a></p>', 1, 1];
         yield ['a:not(.dd) {k:v}', '<a class="dd1"></a>', '<a class="dd"></a>', 1, 1];
         yield ['a:not(.dd#qq) {k:v}', '<a class="dd1" id="qq"></a>', '<a class="dd" id="qq"></a>', 1, 1];
+        yield ['a, b {k:v}', '<b>2</b>', '<p>1</p>', 1, 1];
     }
 
     /**
