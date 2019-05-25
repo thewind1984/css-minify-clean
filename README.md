@@ -31,7 +31,7 @@ It supports twig templates also, because `{% %}`, `{{ }}` and `{# #}` will be de
 ## Usage
 
 > require_once './vendor/autoload.php';  
-> $cssOptimizator = new \CssOptimizator\CssOptimize();  
+> $cssOptimizator = new \CssOptimizator\CssOptimize\CssOptimize();  
 > $cssOptimizator->addCssFile('path/to/assets/file.css');  
 > $cssOptimizator->addSourceFile('path/to/templates/page.html');  
 > $cssOptimizator->optimize()->minify()->saveContent('path/to/assets/file.min.css');  
