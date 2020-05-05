@@ -82,9 +82,11 @@ interface CssOptimizeInterface
     /**
      * Returns current css content.
      *
+     * @param bool $clean
+     *
      * @return string
      */
-    public function getCssContent(): string;
+    public function getCssContent(bool $clean = false): string;
 
     /**
      * Returns current source.

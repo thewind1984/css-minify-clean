@@ -4,6 +4,10 @@ Added, changed, deleted.
 
 ## [Unreleased]
 
+## [1.2.1] - 2020-05-06
+### Added
+- Extra parameter for method `getCssContent` to clean added content
+
 ## [1.2.0] - 2019-05-25
 ### Added
 - Processing tabs as spaces during minification
@@ -46,7 +50,8 @@ Added, changed, deleted.
 ### Added
 - Initial version of repository
 
-[Unreleased]: https://github.com/thewind1984/css-optimizator/compare/1.2.0...HEAD
+[Unreleased]: https://github.com/thewind1984/css-optimizator/compare/1.2.1...HEAD
+[1.2.1]: https://github.com/thewind1984/css-optimizator/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/thewind1984/css-optimizator/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/thewind1984/css-optimizator/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/thewind1984/css-optimizator/compare/1.0.2...1.1.0

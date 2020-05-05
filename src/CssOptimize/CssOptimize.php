@@ -165,9 +165,15 @@ class CssOptimize implements CssOptimizeInterface
     /**
      * @inheritdoc
      */
-    public function getCssContent(): string
+    public function getCssContent(bool $clean = false): string
     {
-        return $this->cssContent;
+        $cssContent = $this->cssContent;
+
+        if ($clean === true) {
+            $this->cssContent = '';
+        }
+
+        return $cssContent;
     }
 
     /**
